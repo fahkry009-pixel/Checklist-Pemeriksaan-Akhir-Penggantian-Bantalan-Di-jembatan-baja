@@ -5,20 +5,18 @@
   - subitems tetap bisa diberi hasil karena pada formulir asli ada tanda V di kolom hasil.
 */
 
-const persiapan = [
-  { num: "1", title: "Form Izin Kerja", options: ["Ada", "Tidak"] },
-  { num: "2", title: "Ketersediaan Train Watcher", options: ["Ada", "Tidak"] },
-  { num: "3", title: "Bendera Kerja", options: ["Ada", "Tidak"] },
-  { num: "4", title: "APD Pekerja", options: ["Ada", "Tidak"] },
-  { num: "5", title: "Pengukuran Suhu Rel", options: ["≤ 45°C", "> 45°C"] },
+
+const akhir = [
+  { num: "1", title: "Pemeriksaan Lebar Jalur", options: ["Baik", "Kurang Baik"] },
+  { num: "2", title: "Penambat", options: ["Lengkap", "Tidak"] },
   {
-    num: "6", title: "Dengan Semboyan", subitems: [
+    num: "3", title: "Taspat (penstabilan)", subitems: [
       { label: "a S2A", options: ["Ada", "Tidak ada"] },
       { label: "b S2B", options: ["Ada", "Tidak ada"] },
-      { label: "c S3", options: ["Ada", "Tidak ada"] },
-      { label: "d Lain-lain", text: true, placeholder: "... km/jam" }
+      { label: "c Lain-lain", text: true, placeholder: "... km/jam" }
     ]
-  }
+  },
+  { num: "4", title: "Laporan selesai pekerjaan", options: ["Sudah", "Belum"] }
 ];
 
 function radioHTML(name, options) {
@@ -58,7 +56,7 @@ function render(items, targetId, prefix) {
   });
 }
 
-render(persiapan, "persiapan", "p");
+render(akhir, "akhir", "a");
 
 function checked(name) {
   const el = document.querySelector(`input[name="${name}"]:checked`);
@@ -118,7 +116,7 @@ function buatPDF() {
   const nipp = document.getElementById("nipp").value;
   const catatan = document.getElementById("catatan").value;
 
-  const P = collect(persiapan, "p");
+  const A = collect(akhir, "a");
 
   const win = window.open("", "_blank");
   win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
@@ -151,7 +149,7 @@ function buatPDF() {
       <div><span>Nama Pengawas</span><span>:</span><span>${esc(nama || "...")}</span></div>
       <div><span>NIPP Pengawas</span><span>:</span><span>${esc(nipp || "...")}</span></div>
     </div>
-    ${makeSection("Persiapan", P)}
+    ${makeSection("Pemeriksaan Akhir", A)}
     <div class="note"><b>Catatan:</b><br>${esc(catatan).replace(/\n/g, "<br>")}</div>
     <div class="no-print" style="margin-top:20px">
       <button onclick="window.print()">Cetak / Simpan sebagai PDF</button>
